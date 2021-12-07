@@ -1,0 +1,49 @@
+[package]
+name = "engelsimulator2"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default = [
+    "bevy/bevy_audio",
+    "bevy/bevy_gltf",
+    "bevy/bevy_winit",
+    "bevy/bevy_wgpu",
+    "bevy/render",
+    # "bevy/dynamic_plugins",
+    "bevy/png",
+    "bevy/hdr",
+    "bevy/mp3",
+    "bevy/x11",
+]
+
+# cargo build --target wasm32-unknown-unknown --no-default-features --features web
+# wasm-bindgen --out-dir target --out-name wasm --target web --no-typescript target/wasm32-unknown-unknown/debug/my_bevy_game.wasm
+web = [
+    "bevy_webgl2",
+    #"bevy/bevy_audio",
+    "bevy/bevy_gltf",
+    "bevy/bevy_winit",
+    "bevy/render",
+    #"bevy/dynamic_plugins",
+    "bevy/png",
+    "bevy/hdr",
+    #"bevy/mp3",
+    #"bevy/x11",
+]
+
+# Enable optimizations for dependencies (incl. Bevy), but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
+
+# Maybe also enable only a small amount of optimization for our code:
+[profile.dev]
+opt-level = 1
+
+[dependencies]
+#bevy = { version = "0.5.0", default-features = false, git = "https://github.com/bevyengine/bevy.git", ref = "4423a2fa2dc82fad71525ed3f44e16b8481a4902" }
+bevy = { version = "0.5", default-features = false }
+bevy_webgl2 = { version = "0.5", optional = true }
+bevy_svg = "0.3"

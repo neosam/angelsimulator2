@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use bevy_prototype_lyon::prelude::*;
+use heron::prelude::*;
 
 pub struct PlayerEntityGenerator {}
 
@@ -21,6 +22,9 @@ impl PlayerEntityGenerator {
                 outline_options: StrokeOptions::default().with_line_width(2.0),
             },
             Transform::default(),
-        ));
+        ))
+        .insert(RigidBody::Dynamic)
+        .insert(CollisionShape::Sphere { radius: 10.0 })
+        .insert(Velocity::from_linear(Vec3::X * 30.0));
     }
 }

@@ -18,6 +18,10 @@ pub fn ingame_startup_system(mut commands: Commands, asset_server: Res<AssetServ
     });
 
     entity::PlayerEntityGenerator::new().build(&mut commands);
+    entity::SanityDrainGenerator::new()
+        .with_radius(100.0)
+        .with_position(-300.0, -300.0)
+        .build(&mut commands);
     commands.insert_resource(resource::InputState::default());
 
     commands

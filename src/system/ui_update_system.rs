@@ -5,7 +5,7 @@ use crate::component;
 
 #[allow(clippy::type_complexity)]
 pub fn ui_update_system(
-     mut q: QuerySet<(
+    mut q: QuerySet<(
         Query<&mut Text, With<component::UiSanity>>,
         Query<&component::Sanity, With<component::Player>>,
     )>,

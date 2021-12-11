@@ -16,7 +16,7 @@ impl PlayerEntityGenerator {
             radius: 20.0,
             center: Vec2::ZERO,
         };
-        commands
+        let mut entity = commands
             .spawn_bundle(GeometryBuilder::build_as(
                 &shape,
                 ShapeColors::outlined(Color::TEAL, Color::BLACK),
@@ -24,12 +24,14 @@ impl PlayerEntityGenerator {
                     fill_options: FillOptions::default(),
                     outline_options: StrokeOptions::default().with_line_width(2.0),
                 },
-                Transform::default(),
-            ))
-            .insert(RigidBody::Dynamic)
+                Transform::from_xyz(0.0, 0.0, 100.0),
+            ));
+        entity.insert(RigidBody::Dynamic)
             .insert(CollisionShape::Sphere { radius: 10.0 })
             .insert(Velocity::from_linear(Vec3::X * 30.0))
+            .insert(RotationConstraints::lock())
             .insert(component::Player)
             .insert(component::Sanity::new_full(120.0));
+        println!("Player id: {:?}", entity.id());
     }
 }

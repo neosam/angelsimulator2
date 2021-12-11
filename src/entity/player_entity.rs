@@ -2,6 +2,8 @@ use bevy::prelude::*;
 use bevy_prototype_lyon::prelude::*;
 use heron::prelude::*;
 
+use crate::component;
+
 pub struct PlayerEntityGenerator {}
 
 impl PlayerEntityGenerator {
@@ -25,6 +27,7 @@ impl PlayerEntityGenerator {
         ))
         .insert(RigidBody::Dynamic)
         .insert(CollisionShape::Sphere { radius: 10.0 })
-        .insert(Velocity::from_linear(Vec3::X * 30.0));
+        .insert(Velocity::from_linear(Vec3::X * 30.0))
+        .insert(component::Player);
     }
 }

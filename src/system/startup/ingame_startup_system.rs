@@ -1,6 +1,6 @@
 use bevy::{prelude::*, render::camera::OrthographicProjection};
 
-use crate::entity;
+use crate::{entity, resource};
 
 pub fn ingame_startup_system(mut commands: Commands) {
     commands.spawn_bundle(OrthographicCameraBundle {
@@ -15,4 +15,5 @@ pub fn ingame_startup_system(mut commands: Commands) {
     });
 
     entity::PlayerEntityGenerator::new().build(&mut commands);
+    commands.insert_resource(resource::InputState::default());
 }

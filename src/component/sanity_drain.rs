@@ -4,8 +4,6 @@ pub struct SanityDrain {
 
 impl SanityDrain {
     pub fn with_strength(strength: f32) -> Self {
-        SanityDrain {
-            strength,
-        }
+        SanityDrain { strength }
     }
 }

@@ -1,4 +1,3 @@
-
 use bevy::prelude::*;
 use bevy_prototype_lyon::prelude::*;
 use heron::prelude::*;
@@ -34,7 +33,7 @@ impl<RADIUS> SanityDrainGenerator<RADIUS> {
     pub fn with_position(self, x: impl Into<f32>, y: impl Into<f32>) -> Self {
         SanityDrainGenerator {
             radius: self.radius,
-            x: x.into(), 
+            x: x.into(),
             y: y.into(),
         }
     }
@@ -46,18 +45,20 @@ impl SanityDrainGenerator<f32> {
             radius: self.radius,
             center: Vec2::ZERO,
         };
-        let mut entity = commands
-            .spawn_bundle(GeometryBuilder::build_as(
-                &shape,
-                ShapeColors::outlined(Color::RED, Color::BLACK),
-                DrawMode::Outlined {
-                    fill_options: FillOptions::default(),
-                    outline_options: StrokeOptions::default().with_line_width(2.0),
-                },
-                Transform::from_xyz(self.x, self.y, 10.0),
-            ));
-        entity.insert(RigidBody::Sensor)
-            .insert(CollisionShape::Sphere { radius: self.radius })
+        let mut entity = commands.spawn_bundle(GeometryBuilder::build_as(
+            &shape,
+            ShapeColors::outlined(Color::RED, Color::BLACK),
+            DrawMode::Outlined {
+                fill_options: FillOptions::default(),
+                outline_options: StrokeOptions::default().with_line_width(2.0),
+            },
+            Transform::from_xyz(self.x, self.y, 10.0),
+        ));
+        entity
+            .insert(RigidBody::Sensor)
+            .insert(CollisionShape::Sphere {
+                radius: self.radius,
+            })
             .insert(Velocity::from_linear(Vec3::X * 30.0))
             .insert(RotationConstraints::lock())
             .insert(component::SanityDrain::with_strength(10.0));

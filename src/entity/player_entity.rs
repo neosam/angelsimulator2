@@ -1,30 +1,38 @@
 use bevy::prelude::*;
-use bevy_prototype_lyon::prelude::*;
 use heron::prelude::*;
 
 use crate::component;
+use crate::resource;
 
-pub struct PlayerEntityGenerator {}
+pub struct NoTexture;
 
-impl PlayerEntityGenerator {
+pub struct PlayerEntityGenerator<TEXTURE> {
+    texture: TEXTURE,
+}
+
+impl PlayerEntityGenerator<NoTexture> {
     pub fn new() -> Self {
-        PlayerEntityGenerator {}
+        PlayerEntityGenerator {
+            texture: NoTexture,
+        }
     }
+}
 
+impl<TEXTURE> PlayerEntityGenerator<TEXTURE> {
+    pub fn with_sprites(self, sprites: &resource::Sprites) -> PlayerEntityGenerator<Handle<ColorMaterial>> {
+        PlayerEntityGenerator { texture: sprites.player.clone() }
+    }
+}
+
+impl PlayerEntityGenerator<Handle<ColorMaterial>> {
     pub fn build(self, commands: &mut Commands) {
-        let shape = shapes::Circle {
-            radius: 20.0,
-            center: Vec2::ZERO,
-        };
-        let mut entity = commands.spawn_bundle(GeometryBuilder::build_as(
-            &shape,
-            ShapeColors::outlined(Color::TEAL, Color::BLACK),
-            DrawMode::Outlined {
-                fill_options: FillOptions::default(),
-                outline_options: StrokeOptions::default().with_line_width(2.0),
-            },
-            Transform::from_xyz(0.0, 0.0, 100.0),
-        ));
+        let mut entity = commands.spawn_bundle(SpriteBundle {
+            material: self.texture,
+            sprite: Sprite::new(Vec2::new(64.0, 64.0)),
+            transform: Transform::from_xyz(0.0, 0.0, 100.0),
+            ..Default::default()
+        });
+
         entity
             .insert(RigidBody::Dynamic)
             .insert(CollisionShape::Sphere { radius: 10.0 })

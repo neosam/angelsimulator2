@@ -1,28 +1,30 @@
-use bevy::{prelude::*, render::camera::OrthographicProjection};
+use bevy::prelude::*;
+use anyhow::Context;
 
 use crate::{component, entity, resource};
 
-pub fn ingame_startup_system(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn_bundle(OrthographicCameraBundle {
-        orthographic_projection: OrthographicProjection {
-            left: -400.0,
-            right: 400.0,
-            top: 300.0,
-            bottom: 300.0,
-            ..Default::default()
-        },
-        ..OrthographicCameraBundle::new_2d()
-    });
+pub fn ingame_startup_system(mut commands: Commands, asset_server: Res<AssetServer>, mut materials: ResMut<Assets<ColorMaterial>>) -> anyhow::Result<()>{
+    asset_server.load_folder("sprites").context("Could not load folder: sprites")?;
+    let sprites = resource::Sprites {
+        player: materials.add(asset_server.get_handle("sprites/player.png").into())
+    };
+
+
+    commands.spawn_bundle(OrthographicCameraBundle::new_2d());
     commands.spawn_bundle(UiCameraBundle {
         ..Default::default()
     });
 
-    entity::PlayerEntityGenerator::new().build(&mut commands);
+
+    entity::PlayerEntityGenerator::new()
+        .with_sprites(&sprites)
+        .build(&mut commands);
     entity::SanityDrainGenerator::new()
         .with_radius(100.0)
         .with_position(-300.0, -300.0)
         .build(&mut commands);
     commands.insert_resource(resource::InputState::default());
+
 
     commands
         .spawn_bundle(TextBundle {
@@ -47,4 +49,7 @@ pub fn ingame_startup_system(mut commands: Commands, asset_server: Res<AssetServ
             ..Default::default()
         })
         .insert(component::UiSanity);
+
+    commands.insert_resource(sprites);
+    Ok(())
 }

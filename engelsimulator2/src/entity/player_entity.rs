@@ -8,11 +8,12 @@ pub struct NoTexture;
 
 pub struct PlayerEntityGenerator<TEXTURE> {
     texture: TEXTURE,
+    position: (f32, f32),
 }
 
 impl PlayerEntityGenerator<NoTexture> {
     pub fn new() -> Self {
-        PlayerEntityGenerator { texture: NoTexture }
+        PlayerEntityGenerator { texture: NoTexture, position: (0.0, 0.0) }
     }
 }
 
@@ -23,7 +24,16 @@ impl<TEXTURE> PlayerEntityGenerator<TEXTURE> {
     ) -> PlayerEntityGenerator<Handle<ColorMaterial>> {
         PlayerEntityGenerator {
             texture: sprites.player.clone(),
+            position: self.position
         }
+    }
+
+    pub fn with_position(
+        mut self,
+        position: (f32, f32),
+    ) -> Self {
+        self.position = position;
+        self
     }
 }
 
@@ -32,7 +42,7 @@ impl PlayerEntityGenerator<Handle<ColorMaterial>> {
         let mut entity = commands.spawn_bundle(SpriteBundle {
             material: self.texture,
             sprite: Sprite::new(Vec2::new(64.0, 64.0)),
-            transform: Transform::from_xyz(0.0, 0.0, 100.0),
+            transform: Transform::from_xyz(self.position.0, self.position.1, 100.0),
             ..Default::default()
         });
 

@@ -20,8 +20,8 @@ pub enum Barrier {
 
 #[derive(Debug)]
 pub struct Level {
-    barrier: Vec<Barrier>,
-    spawns: HashMap<String, Vec<(f32, f32)>>,
+    pub barrier: Vec<Barrier>,
+    pub spawns: HashMap<String, Vec<(f32, f32)>>,
 }
 
 pub fn parse_level_from_svg(file_content: &str) -> std::result::Result<Level, LevelParserError> {

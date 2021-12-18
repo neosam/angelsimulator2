@@ -1322,6 +1322,7 @@ dependencies = [
  "bevy_prototype_lyon",
  "bevy_webgl2",
  "heron",
+ "level-parser",
 ]
 
 [[package]]

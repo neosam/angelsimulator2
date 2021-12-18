@@ -7,5 +7,6 @@ pub use sanity_drain::SanityDrain;
 // Marker
 
 pub struct Player;
+pub struct MainCamera;
 
 pub struct UiSanity;

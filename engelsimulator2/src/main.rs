@@ -27,6 +27,7 @@ fn main() {
             .system()
             .chain(system::handle_error_system.system()),
     );
+    builder.add_system(system::camera_movement_system.system());
     builder.add_system(system::collision_handler_system.system());
     builder.add_system(system::sanity_drain_system.system());
     builder.add_system(

@@ -34,19 +34,6 @@ web = [
     #"bevy/x11",
 ]
 
-# Enable optimizations for dependencies (incl. Bevy), but not for our code:
-[profile.dev.package."*"]
-opt-level = 3
-
-# Maybe also enable only a small amount of optimization for our code:
-[profile.dev]
-opt-level = 1
-
-[profile.release]
-lto = "thin"
-opt-level = "s"
-
-
 [dependencies]
 #bevy = { version = "0.5.0", default-features = false, git = "https://github.com/bevyengine/bevy.git", ref = "4423a2fa2dc82fad71525ed3f44e16b8481a4902" }
 bevy = { version = "0.5", default-features = false }

@@ -1,20 +1,24 @@
-use bevy::prelude::*;
 use anyhow::Context;
+use bevy::prelude::*;
 
 use crate::{component, entity, resource};
 
-pub fn ingame_startup_system(mut commands: Commands, asset_server: Res<AssetServer>, mut materials: ResMut<Assets<ColorMaterial>>) -> anyhow::Result<()>{
-    asset_server.load_folder("sprites").context("Could not load folder: sprites")?;
+pub fn ingame_startup_system(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
+) -> anyhow::Result<()> {
+    asset_server
+        .load_folder("sprites")
+        .context("Could not load folder: sprites")?;
     let sprites = resource::Sprites {
-        player: materials.add(asset_server.get_handle("sprites/player.png").into())
+        player: materials.add(asset_server.get_handle("sprites/player.png").into()),
     };
-
 
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
     commands.spawn_bundle(UiCameraBundle {
         ..Default::default()
     });
-
 
     entity::PlayerEntityGenerator::new()
         .with_sprites(&sprites)
@@ -24,7 +28,6 @@ pub fn ingame_startup_system(mut commands: Commands, asset_server: Res<AssetServ
         .with_position(-300.0, -300.0)
         .build(&mut commands);
     commands.insert_resource(resource::InputState::default());
-
 
     commands
         .spawn_bundle(TextBundle {

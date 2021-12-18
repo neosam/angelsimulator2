@@ -12,15 +12,18 @@ pub struct PlayerEntityGenerator<TEXTURE> {
 
 impl PlayerEntityGenerator<NoTexture> {
     pub fn new() -> Self {
-        PlayerEntityGenerator {
-            texture: NoTexture,
-        }
+        PlayerEntityGenerator { texture: NoTexture }
     }
 }
 
 impl<TEXTURE> PlayerEntityGenerator<TEXTURE> {
-    pub fn with_sprites(self, sprites: &resource::Sprites) -> PlayerEntityGenerator<Handle<ColorMaterial>> {
-        PlayerEntityGenerator { texture: sprites.player.clone() }
+    pub fn with_sprites(
+        self,
+        sprites: &resource::Sprites,
+    ) -> PlayerEntityGenerator<Handle<ColorMaterial>> {
+        PlayerEntityGenerator {
+            texture: sprites.player.clone(),
+        }
     }
 }
 

@@ -27,7 +27,7 @@ cargo build --target wasm32-unknown-unknown --no-default-features --features web
 wasm-bindgen --out-dir web --out-name engelsimulator2 --target web --no-typescript target/wasm32-unknown-unknown/debug/engelsimulator2.wasm
 # Share the content of the web directory over http (e.g. with python)
 cd web
-python2 -m SimpleHTTPServer
+python3 -m http.server
 ```
 
 Now you can run the game by open http://localhost:8000 in your browser.

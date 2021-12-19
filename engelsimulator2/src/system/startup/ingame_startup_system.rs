@@ -23,27 +23,34 @@ pub fn ingame_startup_system(
     });
 
 
-    let level_scale_factor = 0.2;
+    let level_scale_factor = 1.0;
     let player_position = *level.spawns.get("player")
         .context("Could not find player positions in level")?
         .get(0)
         .context("Player positions in level are empty")?;
     entity::PlayerEntityGenerator::new()
         .with_sprites(&sprites)
-        .with_position((player_position.0 * level_scale_factor, player_position.1 * level_scale_factor))
+        .with_position((player_position.0 * level_scale_factor, -player_position.1 * level_scale_factor))
         .build(&mut commands);
 
     entity::SanityDrainGenerator::new()
         .with_radius(100.0)
         .with_position(-300.0, -300.0)
         .build(&mut commands);
+    
+    let level_texture = asset_server.load("levels/assembly-hall-1.png");
+    commands.spawn_bundle(SpriteBundle {
+        material: materials.add(level_texture.into()),
+        transform: Transform::from_xyz(level.size.0 / 2.0, level.size.1 / -2.0, 0.0),
+        ..Default::default()
+    });
 
     for barrier in level.barrier.iter() {
         match *barrier {
             level_parser::Barrier::Circle(x, y, radius) =>
-                entity::circle_barrier(&mut commands, (x * level_scale_factor, y * level_scale_factor, radius * level_scale_factor)),
+                entity::circle_barrier(&mut commands, (x * level_scale_factor, -y * level_scale_factor, radius * level_scale_factor)),
             level_parser::Barrier::Rect(x, y, width, height) =>
-                entity::rect_barrier(&mut commands, (x * level_scale_factor, y * level_scale_factor, width * level_scale_factor, height * level_scale_factor)),
+                entity::rect_barrier(&mut commands, (x * level_scale_factor, -y * level_scale_factor - height, width * level_scale_factor, height * level_scale_factor)),
         }
     }
 

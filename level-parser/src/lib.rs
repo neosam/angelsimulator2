@@ -22,6 +22,7 @@ pub enum Barrier {
 pub struct Level {
     pub barrier: Vec<Barrier>,
     pub spawns: HashMap<String, Vec<(f32, f32)>>,
+    pub size: (f32, f32),
 }
 
 pub fn parse_level_from_svg(file_content: &str) -> std::result::Result<Level, LevelParserError> {
@@ -31,11 +32,27 @@ pub fn parse_level_from_svg(file_content: &str) -> std::result::Result<Level, Le
     let mut barrier = Vec::new();
     let mut spawns = HashMap::new();
     let mut last_text_position: (f32, f32) = (0.0, 0.0);
+    let mut size = (0.0, 0.0);
     for event in svg::read(file_content)? {
         //if let svg::parser::Event::Tag(tagname, tag_type, _) = &event {
         //    println!("tagname: {}, tag_type: {:?}", tagname, tag_type);
         //}
         match event {
+            svg::parser::Event::Tag("svg", tag::Type::Start, attributes) => {
+                let width: f32 = attributes
+                    .get("width")
+                    .ok_or_else(|| {
+                        LevelParserError::WrongArguments("No width coordinate in svg".into())
+                    })?
+                    .parse()?;
+                let height: f32 = attributes
+                    .get("height")
+                    .ok_or_else(|| {
+                        LevelParserError::WrongArguments("No height coordinate in svg".into())
+                    })?
+                    .parse()?;
+                size = (width, height);
+            }
             svg::parser::Event::Tag("g", tag::Type::Start, attributes) => {
                 if attributes
                     .get("inkscape:groupmode")
@@ -144,5 +161,5 @@ pub fn parse_level_from_svg(file_content: &str) -> std::result::Result<Level, Le
             }
         }
     }
-    Ok(Level { barrier, spawns })
+    Ok(Level { barrier, spawns, size })
 }

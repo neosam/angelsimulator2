@@ -40,7 +40,7 @@ to compile the project.  If you get such a version conflict error message, then
 you need to reinstall wasm-bindgen-cli with the version it wants.
 
 ```
-cargo install -f wasn-bindgen-cli --version whatever.it.wants
+cargo install -f wasm-bindgen-cli --version whatever.it.wants
 ```
 
 

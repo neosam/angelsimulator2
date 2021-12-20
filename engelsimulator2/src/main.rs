@@ -5,9 +5,9 @@ use heron::prelude::*;
 mod component;
 mod entity;
 mod event;
+mod gamestate;
 mod resource;
 mod system;
-mod gamestate;
 
 use gamestate::GameState;
 
@@ -21,42 +21,52 @@ fn main() {
 
     builder.add_event::<event::collision_events::SanityDrainEvent>();
     builder.add_state(GameState::Heaven);
-    builder.add_system_set(SystemSet::on_enter(GameState::Ingame)
-        .with_system(system::startup::ingame_startup_system
-            .system()
-            .chain(system::handle_error_system.system()))
-    );
-    builder.add_system_set(SystemSet::on_update(GameState::Ingame)
-        .with_system(system::input_system.system())
-        .with_system(system::camera_movement_system.system())
-        .with_system(system::collision_handler_system.system())
-        .with_system(system::sanity_drain_system.system())
-        .with_system(
-            system::ui_update_system
+    builder.add_system_set(
+        SystemSet::on_enter(GameState::Ingame).with_system(
+            system::startup::ingame_startup_system
                 .system()
                 .chain(system::handle_error_system.system()),
-        )
-        .with_system(
-            system::player_controller_system
-                .system()
-                .chain(system::handle_error_system.system()),
-        )
-        .with_system(
-            system::ingame_termination_system.system().chain(system::handle_error_system.system())
-        )
+        ),
     );
-    builder.add_system_set(SystemSet::on_exit(GameState::Ingame)
-        .with_system(system::cleanup_system.system())
+    builder.add_system_set(
+        SystemSet::on_update(GameState::Ingame)
+            .with_system(system::input_system.system())
+            .with_system(system::camera_movement_system.system())
+            .with_system(system::collision_handler_system.system())
+            .with_system(system::sanity_drain_system.system())
+            .with_system(
+                system::ui_update_system
+                    .system()
+                    .chain(system::handle_error_system.system()),
+            )
+            .with_system(
+                system::player_controller_system
+                    .system()
+                    .chain(system::handle_error_system.system()),
+            )
+            .with_system(
+                system::ingame_termination_system
+                    .system()
+                    .chain(system::handle_error_system.system()),
+            ),
+    );
+    builder.add_system_set(
+        SystemSet::on_exit(GameState::Ingame).with_system(system::cleanup_system.system()),
     );
 
-    builder.add_system_set(SystemSet::on_enter(GameState::Heaven)
-        .with_system(system::startup::heaven_startup_system.system())
+    builder.add_system_set(
+        SystemSet::on_enter(GameState::Heaven)
+            .with_system(system::startup::heaven_startup_system.system()),
     );
-    builder.add_system_set(SystemSet::on_update(GameState::Heaven)
-        .with_system(system::heaven_update_system.system().chain(system::handle_error_system.system()))
+    builder.add_system_set(
+        SystemSet::on_update(GameState::Heaven).with_system(
+            system::heaven_update_system
+                .system()
+                .chain(system::handle_error_system.system()),
+        ),
     );
-    builder.add_system_set(SystemSet::on_exit(GameState::Heaven)
-        .with_system(system::cleanup_system.system())
+    builder.add_system_set(
+        SystemSet::on_exit(GameState::Heaven).with_system(system::cleanup_system.system()),
     );
 
     builder.run();

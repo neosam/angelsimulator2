@@ -42,10 +42,7 @@ pub fn sanity_drain_system(
             println!("WARN:  SanityDrain not found for entity: {:?}", offender);
             0.0
         };
-        if let Ok(mut sanity) = q
-            .q0_mut()
-            .get_component_mut::<component::Sanity>(*victim) 
-        {
+        if let Ok(mut sanity) = q.q0_mut().get_component_mut::<component::Sanity>(*victim) {
             sanity.current -= drain * time.delta_seconds();
         } else {
             println!("WARN:  Victim not found for entity: {:?}", victim);

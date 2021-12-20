@@ -1,7 +1,7 @@
 use std::f32::consts::PI;
 
 use bevy::prelude::*;
-use bevy_prototype_lyon::{prelude::*, shapes::RectangleOrigin};
+//use bevy_prototype_lyon::{prelude::*, shapes::RectangleOrigin};
 use heron::prelude::*;
 
 pub fn rect_barrier(

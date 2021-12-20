@@ -41,6 +41,9 @@ fn main() {
                 .system()
                 .chain(system::handle_error_system.system()),
         )
+        .with_system(
+            system::ingame_termination_system.system().chain(system::handle_error_system.system())
+        )
     );
     builder.add_system_set(SystemSet::on_exit(GameState::Ingame)
         .with_system(system::cleanup_system.system())

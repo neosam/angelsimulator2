@@ -32,15 +32,23 @@ pub fn sanity_drain_system(
     }
 
     for (offender, victim) in pairs.iter() {
-        let drain = q
+        let drain = if let Ok(drain) = q
             .q1()
             .get_component::<component::SanityDrain>(*offender)
-            .unwrap()
-            .strength;
-        let mut sanity = q
+            .map(|sanity_drain| sanity_drain.strength)
+        {
+            drain
+        } else {
+            println!("WARN:  SanityDrain not found for entity: {:?}", offender);
+            0.0
+        };
+        if let Ok(mut sanity) = q
             .q0_mut()
-            .get_component_mut::<component::Sanity>(*victim)
-            .unwrap();
-        sanity.current -= drain * time.delta_seconds();
+            .get_component_mut::<component::Sanity>(*victim) 
+        {
+            sanity.current -= drain * time.delta_seconds();
+        } else {
+            println!("WARN:  Victim not found for entity: {:?}", victim);
+        }
     }
 }

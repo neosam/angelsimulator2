@@ -38,10 +38,14 @@ pub fn ingame_startup_system(
         ))
         .build(&mut commands);
 
-    entity::SanityDrainGenerator::new()
-        .with_radius(100.0)
-        .with_position(-300.0, -300.0)
-        .build(&mut commands);
+    if let Some(obstacles) = level.spawns.get("stationary_obstacle_type_1") {
+        for (x, y) in obstacles.iter() {
+            entity::SanityDrainGenerator::new()
+                .with_radius(10.0)
+                .with_position(*x, -*y)
+                .build(&mut commands);
+        }
+    }
 
     let level_texture = asset_server.load("levels/assembly-hall-1.png");
     commands.spawn_bundle(SpriteBundle {
@@ -100,5 +104,6 @@ pub fn ingame_startup_system(
         .insert(component::UiSanity);
 
     commands.insert_resource(sprites);
+    commands.insert_resource(resource::IngameState::default());
     Ok(())
 }

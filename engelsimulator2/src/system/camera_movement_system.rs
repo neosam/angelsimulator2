@@ -5,12 +5,15 @@ use crate::component;
 pub fn camera_movement_system(
     mut q: QuerySet<(
         Query<&mut Transform, With<component::MainCamera>>,
-        Query<&GlobalTransform, With<component::Player>>
-    )>
+        Query<&GlobalTransform, With<component::Player>>,
+    )>,
 ) {
     let (x, y) = {
         if let Ok(player_transform) = q.q1().single() {
-            (player_transform.translation.x, player_transform.translation.y)
+            (
+                player_transform.translation.x,
+                player_transform.translation.y,
+            )
         } else {
             return;
         }

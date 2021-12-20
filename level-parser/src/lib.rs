@@ -1,4 +1,4 @@
-use std::{io, ops::Deref, collections::HashMap};
+use std::{collections::HashMap, io, ops::Deref};
 use svg::node::{element::tag, Value};
 use thiserror::Error;
 
@@ -15,7 +15,7 @@ pub enum LevelParserError {
 #[derive(Debug)]
 pub enum Barrier {
     Rect(f32, f32, f32, f32, f32), // x, y, width, height, rotation
-    Circle(f32, f32, f32),    // x, y, radius
+    Circle(f32, f32, f32),         // x, y, radius
 }
 
 #[derive(Debug)]
@@ -77,8 +77,7 @@ pub fn parse_level_from_svg(file_content: &str) -> std::result::Result<Level, Le
                     parsing_colliders = true;
                     g_depth = 1;
                     println!("Found collider layer");
-                }
-                else if attributes
+                } else if attributes
                     .get("inkscape:groupmode")
                     .map(|attr| attr.deref())
                     == Some("layer")
@@ -153,9 +152,7 @@ pub fn parse_level_from_svg(file_content: &str) -> std::result::Result<Level, Le
                     .parse()?;
                 barrier.push(Barrier::Circle(x, y, radius));
             }
-            svg::parser::Event::Tag("text", tag::Type::Start, attributes)
-                if parsing_spawns =>
-            {
+            svg::parser::Event::Tag("text", tag::Type::Start, attributes) if parsing_spawns => {
                 let x: f32 = attributes
                     .get("x")
                     .ok_or_else(|| {
@@ -173,11 +170,13 @@ pub fn parse_level_from_svg(file_content: &str) -> std::result::Result<Level, Le
             svg::parser::Event::Text(text) if parsing_spawns => {
                 let entries = spawns.entry(text.to_string()).or_insert_with(|| Vec::new());
                 entries.push(last_text_position);
-            }          
-            _ => {
-
             }
+            _ => {}
         }
     }
-    Ok(Level { barrier, spawns, size })
+    Ok(Level {
+        barrier,
+        spawns,
+        size,
+    })
 }

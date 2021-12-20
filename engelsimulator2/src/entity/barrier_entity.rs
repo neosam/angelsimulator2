@@ -1,11 +1,13 @@
 use std::f32::consts::PI;
 
 use bevy::prelude::*;
-use heron::prelude::*;
 use bevy_prototype_lyon::{prelude::*, shapes::RectangleOrigin};
+use heron::prelude::*;
 
-pub fn rect_barrier(commands: &mut Commands, (x, y, width, height, rotation): (f32, f32, f32, f32, f32)) {
-
+pub fn rect_barrier(
+    commands: &mut Commands,
+    (x, y, width, height, rotation): (f32, f32, f32, f32, f32),
+) {
     //let shape = shapes::Rectangle {
     //    width,
     //    height,

@@ -1,5 +1,5 @@
-use bevy::prelude::*;
 use anyhow::Context;
+use bevy::prelude::*;
 
 use crate::{component, entity, resource};
 
@@ -13,31 +13,36 @@ pub fn ingame_startup_system(
     };
 
     let level_content = include_str!("../../../resources/levels/assembly-hall-1.svg");
-    let level = level_parser::parse_level_from_svg(level_content)
-        .context("Could not load level")?;
-    
-    commands.spawn_bundle(OrthographicCameraBundle::new_2d())
+    let level =
+        level_parser::parse_level_from_svg(level_content).context("Could not load level")?;
+
+    commands
+        .spawn_bundle(OrthographicCameraBundle::new_2d())
         .insert(component::MainCamera);
     commands.spawn_bundle(UiCameraBundle {
         ..Default::default()
     });
 
-
     let level_scale_factor = 1.0;
-    let player_position = *level.spawns.get("player")
+    let player_position = *level
+        .spawns
+        .get("player")
         .context("Could not find player positions in level")?
         .get(0)
         .context("Player positions in level are empty")?;
     entity::PlayerEntityGenerator::new()
         .with_sprites(&sprites)
-        .with_position((player_position.0 * level_scale_factor, -player_position.1 * level_scale_factor))
+        .with_position((
+            player_position.0 * level_scale_factor,
+            -player_position.1 * level_scale_factor,
+        ))
         .build(&mut commands);
 
     entity::SanityDrainGenerator::new()
         .with_radius(100.0)
         .with_position(-300.0, -300.0)
         .build(&mut commands);
-    
+
     let level_texture = asset_server.load("levels/assembly-hall-1.png");
     commands.spawn_bundle(SpriteBundle {
         material: materials.add(level_texture.into()),
@@ -47,10 +52,24 @@ pub fn ingame_startup_system(
 
     for barrier in level.barrier.iter() {
         match *barrier {
-            level_parser::Barrier::Circle(x, y, radius) =>
-                entity::circle_barrier(&mut commands, (x * level_scale_factor, -y * level_scale_factor, radius * level_scale_factor)),
-            level_parser::Barrier::Rect(x, y, width, height, rotation) =>
-                entity::rect_barrier(&mut commands, (x * level_scale_factor, -y * level_scale_factor - height, width * level_scale_factor, height * level_scale_factor, rotation)),
+            level_parser::Barrier::Circle(x, y, radius) => entity::circle_barrier(
+                &mut commands,
+                (
+                    x * level_scale_factor,
+                    -y * level_scale_factor,
+                    radius * level_scale_factor,
+                ),
+            ),
+            level_parser::Barrier::Rect(x, y, width, height, rotation) => entity::rect_barrier(
+                &mut commands,
+                (
+                    x * level_scale_factor,
+                    -y * level_scale_factor - height,
+                    width * level_scale_factor,
+                    height * level_scale_factor,
+                    rotation,
+                ),
+            ),
         }
     }
 

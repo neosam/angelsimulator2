@@ -13,7 +13,10 @@ pub struct PlayerEntityGenerator<TEXTURE> {
 
 impl PlayerEntityGenerator<NoTexture> {
     pub fn new() -> Self {
-        PlayerEntityGenerator { texture: NoTexture, position: (0.0, 0.0) }
+        PlayerEntityGenerator {
+            texture: NoTexture,
+            position: (0.0, 0.0),
+        }
     }
 }
 
@@ -24,14 +27,11 @@ impl<TEXTURE> PlayerEntityGenerator<TEXTURE> {
     ) -> PlayerEntityGenerator<Handle<ColorMaterial>> {
         PlayerEntityGenerator {
             texture: sprites.player.clone(),
-            position: self.position
+            position: self.position,
         }
     }
 
-    pub fn with_position(
-        mut self,
-        position: (f32, f32),
-    ) -> Self {
+    pub fn with_position(mut self, position: (f32, f32)) -> Self {
         self.position = position;
         self
     }

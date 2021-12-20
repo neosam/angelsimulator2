@@ -1,5 +1,5 @@
 use std::{io, ops::Deref, collections::HashMap};
-use svg::node::element::tag;
+use svg::node::{element::tag, Value};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -14,7 +14,7 @@ pub enum LevelParserError {
 
 #[derive(Debug)]
 pub enum Barrier {
-    Rect(f32, f32, f32, f32), // x, y, width, height
+    Rect(f32, f32, f32, f32, f32), // x, y, width, height, rotation
     Circle(f32, f32, f32),    // x, y, radius
 }
 
@@ -23,6 +23,20 @@ pub struct Level {
     pub barrier: Vec<Barrier>,
     pub spawns: HashMap<String, Vec<(f32, f32)>>,
     pub size: (f32, f32),
+}
+
+pub fn parse_transform(transform: &Value) -> f32 {
+    let transform = transform.to_string();
+    let regex = regex::Regex::new(r".*rotate\((?P<rotation>.*)\).*").unwrap();
+    if let Some(caps) = regex.captures(&transform) {
+        if let Ok(rotation) = &caps["rotation"].parse() {
+            *rotation
+        } else {
+            0.0
+        }
+    } else {
+        0.0
+    }
 }
 
 pub fn parse_level_from_svg(file_content: &str) -> std::result::Result<Level, LevelParserError> {
@@ -110,7 +124,11 @@ pub fn parse_level_from_svg(file_content: &str) -> std::result::Result<Level, Le
                         LevelParserError::WrongArguments("No height coordinate in rect".into())
                     })?
                     .parse()?;
-                barrier.push(Barrier::Rect(x, y, width, height));
+                let rotation = attributes
+                    .get("transform")
+                    .map(parse_transform)
+                    .unwrap_or(0.0);
+                barrier.push(Barrier::Rect(x, y, width, height, rotation));
             }
             svg::parser::Event::Tag("circle", tag::Type::Empty, attributes)
                 if parsing_colliders =>

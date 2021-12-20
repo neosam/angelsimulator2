@@ -49,8 +49,8 @@ pub fn ingame_startup_system(
         match *barrier {
             level_parser::Barrier::Circle(x, y, radius) =>
                 entity::circle_barrier(&mut commands, (x * level_scale_factor, -y * level_scale_factor, radius * level_scale_factor)),
-            level_parser::Barrier::Rect(x, y, width, height) =>
-                entity::rect_barrier(&mut commands, (x * level_scale_factor, -y * level_scale_factor - height, width * level_scale_factor, height * level_scale_factor)),
+            level_parser::Barrier::Rect(x, y, width, height, rotation) =>
+                entity::rect_barrier(&mut commands, (x * level_scale_factor, -y * level_scale_factor - height, width * level_scale_factor, height * level_scale_factor, rotation)),
         }
     }
 

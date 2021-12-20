@@ -20,7 +20,7 @@ fn main() {
     builder.add_plugin(bevy_webgl2::WebGL2Plugin);
 
     builder.add_event::<event::collision_events::SanityDrainEvent>();
-    builder.add_state(GameState::Ingame);
+    builder.add_state(GameState::Heaven);
     builder.add_system_set(SystemSet::on_enter(GameState::Ingame)
         .with_system(system::startup::ingame_startup_system
             .system()
@@ -41,6 +41,19 @@ fn main() {
                 .system()
                 .chain(system::handle_error_system.system()),
         )
+    );
+    builder.add_system_set(SystemSet::on_exit(GameState::Ingame)
+        .with_system(system::cleanup_system.system())
+    );
+
+    builder.add_system_set(SystemSet::on_enter(GameState::Heaven)
+        .with_system(system::startup::heaven_startup_system.system())
+    );
+    builder.add_system_set(SystemSet::on_update(GameState::Heaven)
+        .with_system(system::heaven_update_system.system().chain(system::handle_error_system.system()))
+    );
+    builder.add_system_set(SystemSet::on_exit(GameState::Heaven)
+        .with_system(system::cleanup_system.system())
     );
 
     builder.run();

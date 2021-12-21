@@ -33,7 +33,6 @@ fn main() {
     // Set up state
     builder.add_state(GameState::Heaven);
 
-
     // Set up InGame Systems
     builder.add_system_set(
         SystemSet::on_enter(GameState::Ingame).with_system(
@@ -68,7 +67,6 @@ fn main() {
         SystemSet::on_exit(GameState::Ingame).with_system(system::cleanup_system.system()),
     );
 
-
     // Set up Heaven systems
     builder.add_system_set(
         SystemSet::on_enter(GameState::Heaven)
@@ -84,7 +82,6 @@ fn main() {
     builder.add_system_set(
         SystemSet::on_exit(GameState::Heaven).with_system(system::cleanup_system.system()),
     );
-
 
     // Set up GameOver systems
     builder.add_system_set(

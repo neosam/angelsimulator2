@@ -1,14 +1,14 @@
 use bevy::prelude::*;
 
-use crate::resource;
 use crate::event;
+use crate::resource;
 
 pub fn heaven_startup_system(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
     mut heaven_state: ResMut<resource::HeavenStore>,
     ingame_state: Res<resource::IngameStore>,
-    mut initialize_events: EventWriter<event::InitializeEvent>
+    mut initialize_events: EventWriter<event::InitializeEvent>,
 ) {
     heaven_state.player_sanity = ingame_state.sanity_on_death;
 

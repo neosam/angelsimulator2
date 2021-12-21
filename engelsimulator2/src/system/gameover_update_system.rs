@@ -1,7 +1,7 @@
-use bevy::prelude::*;
 use anyhow::Context;
+use bevy::prelude::*;
 
-use crate::{resource, gamestate::GameState};
+use crate::{gamestate::GameState, resource};
 
 pub fn gameover_update_system(
     keyboard_input: Res<Input<KeyCode>>,

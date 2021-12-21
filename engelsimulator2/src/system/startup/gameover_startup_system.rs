@@ -5,7 +5,7 @@ use crate::event;
 pub fn gameover_startup_system(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
-    mut initialize_events: EventWriter<event::InitializeEvent>
+    mut initialize_events: EventWriter<event::InitializeEvent>,
 ) {
     commands.spawn_bundle(UiCameraBundle {
         ..Default::default()

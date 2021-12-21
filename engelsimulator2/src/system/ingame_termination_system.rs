@@ -20,7 +20,7 @@ pub fn ingame_termination_system(
     if sanity.current <= 0.0 {
         game_state
             .set(GameState::GameOver)
-            .context("Cannot switch state from InGame to GameOver")?;        
+            .context("Cannot switch state from InGame to GameOver")?;
     }
     Ok(())
 }

@@ -5,6 +5,7 @@ use heron::prelude as heron;
 
 use crate::{component, resource};
 
+/// Moves the player.
 pub fn player_controller_system(
     mut query: Query<&mut heron::Velocity, With<component::Player>>,
     input_state: Res<resource::InputStore>,

@@ -4,6 +4,7 @@ use bevy::prelude::*;
 //use bevy_prototype_lyon::{prelude::*, shapes::RectangleOrigin};
 use heron::prelude::*;
 
+/// Create a rectangular static collider
 pub fn rect_barrier(
     commands: &mut Commands,
     (x, y, width, height, rotation): (f32, f32, f32, f32, f32),
@@ -42,6 +43,8 @@ pub fn rect_barrier(
     parent.insert(GlobalTransform::default());
     parent.push_children(&[entity_id]);
 }
+
+/// Create a circular static collider.
 pub fn circle_barrier(commands: &mut Commands, (x, y, radius): (f32, f32, f32)) {
     // let shape = shapes::Circle {
     //         radius: radius,

@@ -2,6 +2,7 @@ use bevy::prelude::*;
 
 use crate::resource;
 
+/// Evalulate keyboard input and populate it on InputStore.
 pub fn input_system(
     keyboard_input: Res<Input<KeyCode>>,
     mut state: ResMut<resource::InputStore>,

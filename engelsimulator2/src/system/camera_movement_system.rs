@@ -2,6 +2,8 @@ use bevy::prelude::*;
 
 use crate::component;
 
+/// Should make sure that the player (or maybe later other important actions)
+/// are visible in the screen.
 pub fn camera_movement_system(
     mut q: QuerySet<(
         Query<&mut Transform, With<component::MainCamera>>,

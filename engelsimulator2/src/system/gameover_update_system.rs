@@ -3,6 +3,7 @@ use bevy::prelude::*;
 
 use crate::{gamestate::GameState, resource};
 
+/// Listen to keyboard input and restart the game.
 pub fn gameover_update_system(
     keyboard_input: Res<Input<KeyCode>>,
     mut state: ResMut<State<GameState>>,

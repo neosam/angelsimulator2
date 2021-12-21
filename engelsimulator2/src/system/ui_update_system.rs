@@ -3,6 +3,7 @@ use bevy::prelude::*;
 
 use crate::component;
 
+/// Update the UI during the InGame state.
 #[allow(clippy::type_complexity)]
 pub fn ui_update_system(
     mut q: QuerySet<(

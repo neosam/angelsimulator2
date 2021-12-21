@@ -1,3 +1,4 @@
+//! All system which set up states are located here.
 pub mod gameover_startup_system;
 pub mod heaven_startup_system;
 pub mod ingame_startup_system;

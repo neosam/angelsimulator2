@@ -6,6 +6,8 @@ use crate::component;
 
 pub struct NoRadius;
 
+/// Builder to generate an entity which drains sanity.
+/// The collider is just a radar so the player can walk through.
 pub struct SanityDrainGenerator<RADIUS> {
     radius: RADIUS,
     x: f32,

@@ -3,6 +3,8 @@ use bevy::prelude::*;
 
 use crate::{component, gamestate::GameState, resource};
 
+/// Checks if the InGame state must be terminated and switches the state
+/// accordingly.
 pub fn ingame_termination_system(
     mut ingame_state: ResMut<resource::IngameStore>,
     mut game_state: ResMut<State<GameState>>,

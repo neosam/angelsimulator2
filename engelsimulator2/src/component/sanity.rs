@@ -1,3 +1,5 @@
+//! Sanity is what usually 'live' is.  The entity counts as dead when the
+//! sanity is 0 or below.
 pub struct Sanity {
     pub max: f32,
     pub current: f32,

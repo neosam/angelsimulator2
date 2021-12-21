@@ -1,4 +1,7 @@
 #[derive(Default)]
+
+/// Store data which is requird by InGame state and other systems which
+/// initialize from InGame.
 pub struct IngameStore {
     pub won: bool,
     pub dead: bool,

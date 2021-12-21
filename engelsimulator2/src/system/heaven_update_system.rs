@@ -3,6 +3,7 @@ use bevy::prelude::*;
 use crate::gamestate::GameState;
 use anyhow::Context;
 
+/// Wait for keyboard input to start the InGame state.
 pub fn heaven_update_system(
     keyboard_input: Res<Input<KeyCode>>,
     mut state: ResMut<State<GameState>>,

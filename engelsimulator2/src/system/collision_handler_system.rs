@@ -4,6 +4,12 @@ use heron::prelude as heron;
 use crate::component;
 use crate::event::collision_events;
 
+/// Evaluate all collisions and populate relevant collisions to separate
+/// writers.
+///
+/// This should make sure that there is only one system which precesses all
+/// collisions.  Other systems just listen to the output of this system which
+/// is much more specialized.
 pub fn collision_handler_system(
     mut collisions: EventReader<heron::CollisionEvent>,
     mut sanity_drains: EventWriter<collision_events::SanityDrainEvent>,

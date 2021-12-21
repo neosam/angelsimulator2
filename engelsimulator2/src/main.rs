@@ -19,7 +19,14 @@ fn main() {
     #[cfg(target_arch = "wasm32")]
     builder.add_plugin(bevy_webgl2::WebGL2Plugin);
 
+    builder.insert_resource(resource::IngameState::new(120.0));
+    builder.insert_resource(resource::HeavenState {
+        player_sanity: 120.0,
+    });
+
     builder.add_event::<event::collision_events::SanityDrainEvent>();
+    builder.add_event::<event::InitializeEvent>();
+
     builder.add_state(GameState::Heaven);
     builder.add_system_set(
         SystemSet::on_enter(GameState::Ingame).with_system(

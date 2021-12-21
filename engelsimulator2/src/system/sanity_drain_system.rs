@@ -11,7 +11,11 @@ pub fn sanity_drain_system(
         Query<&mut component::Sanity>,
         Query<&component::SanityDrain>,
     )>,
+    mut initialize_events: EventReader<event::InitializeEvent>,
 ) {
+    if let Some(_) = initialize_events.iter().next() {
+        pairs.clear();
+    }
     for event in events.iter() {
         match *event {
             SanityDrainEvent(
@@ -39,7 +43,6 @@ pub fn sanity_drain_system(
         {
             drain
         } else {
-            println!("WARN:  SanityDrain not found for entity: {:?}", offender);
             0.0
         };
         if let Ok(mut sanity) = q.q0_mut().get_component_mut::<component::Sanity>(*victim) {

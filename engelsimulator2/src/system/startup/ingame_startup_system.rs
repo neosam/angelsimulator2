@@ -1,12 +1,17 @@
 use anyhow::Context;
 use bevy::prelude::*;
 
-use crate::{component, entity, resource};
+use crate::{
+    component, entity, event,
+    resource::{self, HeavenState},
+};
 
 pub fn ingame_startup_system(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
     mut materials: ResMut<Assets<ColorMaterial>>,
+    heaven_state: Res<HeavenState>,
+    mut initialize_events: EventWriter<event::InitializeEvent>,
 ) -> anyhow::Result<()> {
     let sprites = resource::Sprites {
         player: materials.add(asset_server.load("sprites/player.png").into()),
@@ -32,6 +37,7 @@ pub fn ingame_startup_system(
         .context("Player positions in level are empty")?;
     entity::PlayerEntityGenerator::new()
         .with_sprites(&sprites)
+        .with_sanity_current(heaven_state.player_sanity)
         .with_position((
             player_position.0 * level_scale_factor,
             -player_position.1 * level_scale_factor,
@@ -105,5 +111,6 @@ pub fn ingame_startup_system(
 
     commands.insert_resource(sprites);
     commands.insert_resource(resource::IngameState::default());
+    initialize_events.send(event::InitializeEvent);
     Ok(())
 }

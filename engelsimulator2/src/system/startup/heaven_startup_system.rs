@@ -1,6 +1,17 @@
 use bevy::prelude::*;
 
-pub fn heaven_startup_system(mut commands: Commands, asset_server: Res<AssetServer>) {
+use crate::resource;
+use crate::event;
+
+pub fn heaven_startup_system(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut heaven_state: ResMut<resource::HeavenState>,
+    ingame_state: Res<resource::IngameState>,
+    mut initialize_events: EventWriter<event::InitializeEvent>
+) {
+    heaven_state.player_sanity = ingame_state.sanity_on_death;
+
     commands.spawn_bundle(UiCameraBundle {
         ..Default::default()
     });
@@ -54,4 +65,6 @@ pub fn heaven_startup_system(mut commands: Commands, asset_server: Res<AssetServ
         },
         ..Default::default()
     });
+
+    initialize_events.send(event::InitializeEvent);
 }

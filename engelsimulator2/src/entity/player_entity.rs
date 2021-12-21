@@ -9,6 +9,8 @@ pub struct NoTexture;
 pub struct PlayerEntityGenerator<TEXTURE> {
     texture: TEXTURE,
     position: (f32, f32),
+    sanity_max: f32,
+    sanity_current: f32,
 }
 
 impl PlayerEntityGenerator<NoTexture> {
@@ -16,6 +18,8 @@ impl PlayerEntityGenerator<NoTexture> {
         PlayerEntityGenerator {
             texture: NoTexture,
             position: (0.0, 0.0),
+            sanity_max: 120.0,
+            sanity_current: 120.0,
         }
     }
 }
@@ -28,11 +32,18 @@ impl<TEXTURE> PlayerEntityGenerator<TEXTURE> {
         PlayerEntityGenerator {
             texture: sprites.player.clone(),
             position: self.position,
+            sanity_current: self.sanity_current,
+            sanity_max: self.sanity_max,
         }
     }
 
     pub fn with_position(mut self, position: (f32, f32)) -> Self {
         self.position = position;
+        self
+    }
+
+    pub fn with_sanity_current(mut self, sanity: f32) -> Self {
+        self.sanity_current = sanity;
         self
     }
 }
@@ -52,7 +63,7 @@ impl PlayerEntityGenerator<Handle<ColorMaterial>> {
             .insert(Velocity::from_linear(Vec3::X * 30.0))
             .insert(RotationConstraints::lock())
             .insert(component::Player)
-            .insert(component::Sanity::new_full(120.0));
+            .insert(component::Sanity::new(self.sanity_current, self.sanity_max));
         println!("Player id: {:?}", entity.id());
     }
 }

@@ -4,7 +4,7 @@ pub struct Sanity {
 }
 
 impl Sanity {
-    pub fn new_full(max: f32) -> Self {
-        Sanity { max, current: max }
+    pub fn new(current: f32, max: f32) -> Self {
+        Sanity { current, max }
     }
 }

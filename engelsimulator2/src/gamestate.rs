@@ -2,4 +2,5 @@
 pub enum GameState {
     Heaven,
     Ingame,
+    GameOver,
 }

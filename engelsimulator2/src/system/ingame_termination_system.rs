@@ -8,14 +8,19 @@ pub fn ingame_termination_system(
     mut game_state: ResMut<State<GameState>>,
     query: Query<&component::Sanity, With<component::Player>>,
 ) -> anyhow::Result<()> {
+    let sanity = query
+        .single()
+        .context("Could not find player with Sanity")?;
     if ingame_state.won {
-        let sanity = query
-            .single()
-            .context("Could not find player with Sanity")?;
         ingame_state.sanity_on_death = sanity.current;
         game_state
             .set(GameState::Heaven)
             .context("Cannot switch state from ingame to heaven")?;
+    }
+    if sanity.current <= 0.0 {
+        game_state
+            .set(GameState::GameOver)
+            .context("Cannot switch state from InGame to GameOver")?;        
     }
     Ok(())
 }

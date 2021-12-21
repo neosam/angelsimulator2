@@ -7,7 +7,7 @@ pub fn heaven_update_system(
     keyboard_input: Res<Input<KeyCode>>,
     mut state: ResMut<State<GameState>>,
 ) -> anyhow::Result<()> {
-    if keyboard_input.pressed(KeyCode::Space) {
+    if keyboard_input.just_pressed(KeyCode::Space) {
         state
             .set(GameState::Ingame)
             .context("Could not set the game state from heaven to ingame")?;

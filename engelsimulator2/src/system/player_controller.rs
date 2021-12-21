@@ -7,7 +7,7 @@ use crate::{component, resource};
 
 pub fn player_controller_system(
     mut query: Query<&mut heron::Velocity, With<component::Player>>,
-    input_state: Res<resource::InputState>,
+    input_state: Res<resource::InputStore>,
 ) -> anyhow::Result<()> {
     let speed = 500.0;
     let mut player_velocity = query

@@ -4,7 +4,7 @@ use bevy::prelude::*;
 use crate::{component, gamestate::GameState, resource};
 
 pub fn ingame_termination_system(
-    mut ingame_state: ResMut<resource::IngameState>,
+    mut ingame_state: ResMut<resource::IngameStore>,
     mut game_state: ResMut<State<GameState>>,
     query: Query<&component::Sanity, With<component::Player>>,
 ) -> anyhow::Result<()> {

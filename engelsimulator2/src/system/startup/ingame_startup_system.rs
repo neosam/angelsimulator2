@@ -3,14 +3,14 @@ use bevy::prelude::*;
 
 use crate::{
     component, entity, event,
-    resource::{self, HeavenState},
+    resource::{self, HeavenStore},
 };
 
 pub fn ingame_startup_system(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
     mut materials: ResMut<Assets<ColorMaterial>>,
-    heaven_state: Res<HeavenState>,
+    heaven_state: Res<HeavenStore>,
     mut initialize_events: EventWriter<event::InitializeEvent>,
 ) -> anyhow::Result<()> {
     let sprites = resource::Sprites {
@@ -83,7 +83,7 @@ pub fn ingame_startup_system(
         }
     }
 
-    commands.insert_resource(resource::InputState::default());
+    commands.insert_resource(resource::InputStore::default());
 
     commands
         .spawn_bundle(TextBundle {
@@ -110,7 +110,7 @@ pub fn ingame_startup_system(
         .insert(component::UiSanity);
 
     commands.insert_resource(sprites);
-    commands.insert_resource(resource::IngameState::default());
+    commands.insert_resource(resource::IngameStore::default());
     initialize_events.send(event::InitializeEvent);
     Ok(())
 }

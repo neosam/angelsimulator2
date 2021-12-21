@@ -21,8 +21,8 @@ fn main() {
     builder.add_plugin(bevy_webgl2::WebGL2Plugin);
 
     // Set up resources
-    builder.insert_resource(resource::IngameState::new(120.0));
-    builder.insert_resource(resource::HeavenState {
+    builder.insert_resource(resource::IngameStore::new(120.0));
+    builder.insert_resource(resource::HeavenStore {
         player_sanity: 120.0,
     });
 

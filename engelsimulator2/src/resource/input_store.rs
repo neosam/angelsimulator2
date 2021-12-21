@@ -1,5 +1,5 @@
 #[derive(Default)]
-pub struct InputState {
+pub struct InputStore {
     pub move_up: bool,
     pub move_down: bool,
     pub move_left: bool,

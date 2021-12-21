@@ -4,8 +4,8 @@ use crate::resource;
 
 pub fn input_system(
     keyboard_input: Res<Input<KeyCode>>,
-    mut state: ResMut<resource::InputState>,
-    mut ingame_state: ResMut<resource::IngameState>,
+    mut state: ResMut<resource::InputStore>,
+    mut ingame_state: ResMut<resource::IngameStore>,
 ) {
     state.move_up = keyboard_input.pressed(KeyCode::Up);
     state.move_down = keyboard_input.pressed(KeyCode::Down);

@@ -1,9 +1,9 @@
-pub mod heaven_state;
-pub mod ingame_state;
-pub mod input_state;
+pub mod heaven_store;
+pub mod ingame_store;
+pub mod input_store;
 pub mod sprites;
 
-pub use heaven_state::HeavenState;
-pub use ingame_state::IngameState;
-pub use input_state::InputState;
+pub use heaven_store::HeavenStore;
+pub use ingame_store::IngameStore;
+pub use input_store::InputStore;
 pub use sprites::Sprites;

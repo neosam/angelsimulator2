@@ -1,3 +1,3 @@
-pub struct HeavenState {
+pub struct HeavenStore {
     pub player_sanity: f32,
 }
